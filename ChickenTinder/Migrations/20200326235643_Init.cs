@@ -3,10 +3,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ChickenTinder.Migrations
 {
-    public partial class Init2 : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StreetAddress = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    ZipCode = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -60,6 +76,30 @@ namespace ChickenTinder.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Group_Chicken_Tinder_User",
+                columns: table => new
+                {
+                    GroupId = table.Column<int>(nullable: false),
+                    Chicken_Tinder_UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Group_Chicken_Tinder_User", x => new { x.Chicken_Tinder_UserId, x.GroupId });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Group_Restaurant",
+                columns: table => new
+                {
+                    GroupId = table.Column<int>(nullable: false),
+                    RestaurantId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Group_Restaurant", x => new { x.GroupId, x.RestaurantId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Groups",
                 columns: table => new
                 {
@@ -70,6 +110,35 @@ namespace ChickenTinder.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Groups", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Location",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Address = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    latitude = table.Column<string>(nullable: true),
+                    longitude = table.Column<string>(nullable: true),
+                    LocalityVerbose = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Location", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Restaurant_Chicken_Tinder_User",
+                columns: table => new
+                {
+                    Chicken_Tinder_UserId = table.Column<int>(nullable: false),
+                    RestaurantId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Restaurant_Chicken_Tinder_User", x => new { x.RestaurantId, x.Chicken_Tinder_UserId });
                 });
 
             migrationBuilder.CreateTable(
@@ -182,20 +251,22 @@ namespace ChickenTinder.Migrations
                 name: "Restaurants",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    Food_TypeId = table.Column<int>(nullable: false)
+                    LocationID = table.Column<int>(nullable: false),
+                    Cuisines = table.Column<string>(nullable: true),
+                    AverageCostForTwo = table.Column<int>(nullable: false),
+                    Currency = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Restaurants", x => x.Id);
+                    table.PrimaryKey("PK_Restaurants", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Restaurants_Food_Types_Food_TypeId",
-                        column: x => x.Food_TypeId,
-                        principalTable: "Food_Types",
-                        principalColumn: "Id",
+                        name: "FK_Restaurants_Location_LocationID",
+                        column: x => x.LocationID,
+                        principalTable: "Location",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -205,10 +276,10 @@ namespace ChickenTinder.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<int>(nullable: false),
-                    LastName = table.Column<int>(nullable: false),
-                    PhoneNumber = table.Column<int>(nullable: false),
-                    Address = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<double>(nullable: false),
+                    AddressId = table.Column<int>(nullable: true),
                     IdentityUserId = table.Column<string>(nullable: true),
                     RestaurantId = table.Column<int>(nullable: true),
                     Food_TypeId = table.Column<int>(nullable: true)
@@ -216,6 +287,12 @@ namespace ChickenTinder.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Chicken_Tinder_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Chicken_Tinder_Users_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Chicken_Tinder_Users_Food_Types_Food_TypeId",
                         column: x => x.Food_TypeId,
@@ -232,86 +309,14 @@ namespace ChickenTinder.Migrations
                         name: "FK_Chicken_Tinder_Users_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
                         principalTable: "Restaurants",
-                        principalColumn: "Id",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Group_Restaurant",
-                columns: table => new
-                {
-                    GroupId = table.Column<int>(nullable: false),
-                    RestaurantId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Group_Restaurant", x => new { x.GroupId, x.RestaurantId });
-                    table.ForeignKey(
-                        name: "FK_Group_Restaurant_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Group_Restaurant_Restaurants_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "Restaurants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Group_Chicken_Tinder_User",
-                columns: table => new
-                {
-                    GroupId = table.Column<int>(nullable: false),
-                    Chicken_Tinder_UserId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Group_Chicken_Tinder_User", x => new { x.Chicken_Tinder_UserId, x.GroupId });
-                    table.ForeignKey(
-                        name: "FK_Group_Chicken_Tinder_User_Chicken_Tinder_Users_Chicken_Tinder_UserId",
-                        column: x => x.Chicken_Tinder_UserId,
-                        principalTable: "Chicken_Tinder_Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Group_Chicken_Tinder_User_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Restaurant_Chicken_Tinder_User",
-                columns: table => new
-                {
-                    Chicken_Tinder_UserId = table.Column<int>(nullable: false),
-                    RestaurantId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Restaurant_Chicken_Tinder_User", x => new { x.RestaurantId, x.Chicken_Tinder_UserId });
-                    table.ForeignKey(
-                        name: "FK_Restaurant_Chicken_Tinder_User_Chicken_Tinder_Users_Chicken_Tinder_UserId",
-                        column: x => x.Chicken_Tinder_UserId,
-                        principalTable: "Chicken_Tinder_Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Restaurant_Chicken_Tinder_User_Restaurants_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "Restaurants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "51aafa11-6fb6-47ed-a5a4-4d35ca9bc95b", "541a0b76-596f-4d94-867c-d070a8c79d90", "Chicken Tinder User", "CHICKEN TINDER USER" });
+                values: new object[] { "05dc5232-7a25-41b1-a161-ab49752b9f18", "c0580963-baad-4486-b1aa-036e1740e7b6", "Chicken Tinder User", "CHICKEN TINDER USER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -353,6 +358,11 @@ namespace ChickenTinder.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Chicken_Tinder_Users_AddressId",
+                table: "Chicken_Tinder_Users",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Chicken_Tinder_Users_Food_TypeId",
                 table: "Chicken_Tinder_Users",
                 column: "Food_TypeId");
@@ -368,24 +378,9 @@ namespace ChickenTinder.Migrations
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Group_Chicken_Tinder_User_GroupId",
-                table: "Group_Chicken_Tinder_User",
-                column: "GroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Group_Restaurant_RestaurantId",
-                table: "Group_Restaurant",
-                column: "RestaurantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Restaurant_Chicken_Tinder_User_Chicken_Tinder_UserId",
-                table: "Restaurant_Chicken_Tinder_User",
-                column: "Chicken_Tinder_UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Restaurants_Food_TypeId",
+                name: "IX_Restaurants_LocationID",
                 table: "Restaurants",
-                column: "Food_TypeId");
+                column: "LocationID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -406,10 +401,16 @@ namespace ChickenTinder.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Chicken_Tinder_Users");
+
+            migrationBuilder.DropTable(
                 name: "Group_Chicken_Tinder_User");
 
             migrationBuilder.DropTable(
                 name: "Group_Restaurant");
+
+            migrationBuilder.DropTable(
+                name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Restaurant_Chicken_Tinder_User");
@@ -418,10 +419,10 @@ namespace ChickenTinder.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Groups");
+                name: "Addresses");
 
             migrationBuilder.DropTable(
-                name: "Chicken_Tinder_Users");
+                name: "Food_Types");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
@@ -430,7 +431,7 @@ namespace ChickenTinder.Migrations
                 name: "Restaurants");
 
             migrationBuilder.DropTable(
-                name: "Food_Types");
+                name: "Location");
         }
     }
 }

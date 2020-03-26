@@ -10,16 +10,40 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChickenTinder.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200326091356_RemovedKeyForJunction")]
-    partial class RemovedKeyForJunction
+    [Migration("20200326235643_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ChickenTinder.Models.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Addresses");
+                });
 
             modelBuilder.Entity("ChickenTinder.Models.Chicken_Tinder_User", b =>
                 {
@@ -28,11 +52,11 @@ namespace ChickenTinder.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FirstName")
+                    b.Property<int?>("AddressId")
                         .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Food_TypeId")
                         .HasColumnType("int");
@@ -40,16 +64,18 @@ namespace ChickenTinder.Migrations
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("LastName")
-                        .HasColumnType("int");
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<double>("PhoneNumber")
+                        .HasColumnType("float");
 
                     b.Property<int?>("RestaurantId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("Food_TypeId");
 
@@ -100,8 +126,6 @@ namespace ChickenTinder.Migrations
 
                     b.HasKey("Chicken_Tinder_UserId", "GroupId");
 
-                    b.HasIndex("GroupId");
-
                     b.ToTable("Group_Chicken_Tinder_User");
                 });
 
@@ -115,14 +139,12 @@ namespace ChickenTinder.Migrations
 
                     b.HasKey("GroupId", "RestaurantId");
 
-                    b.HasIndex("RestaurantId");
-
                     b.ToTable("Group_Restaurant");
                 });
 
-            modelBuilder.Entity("ChickenTinder.Models.Restaurant", b =>
+            modelBuilder.Entity("ChickenTinder.Models.Location", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -130,15 +152,48 @@ namespace ChickenTinder.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Food_TypeId")
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LocalityVerbose")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("latitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("longitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Location");
+                });
+
+            modelBuilder.Entity("ChickenTinder.Models.Restaurant", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AverageCostForTwo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Cuisines")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LocationID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
-                    b.HasIndex("Food_TypeId");
+                    b.HasIndex("LocationID");
 
                     b.ToTable("Restaurants");
                 });
@@ -152,8 +207,6 @@ namespace ChickenTinder.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("RestaurantId", "Chicken_Tinder_UserId");
-
-                    b.HasIndex("Chicken_Tinder_UserId");
 
                     b.ToTable("Restaurant_Chicken_Tinder_User");
                 });
@@ -187,8 +240,8 @@ namespace ChickenTinder.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8a761c17-c216-47f9-abd2-04c1bbb00766",
-                            ConcurrencyStamp = "d63c3b81-083d-437c-a314-ceba3e1252bd",
+                            Id = "05dc5232-7a25-41b1-a161-ab49752b9f18",
+                            ConcurrencyStamp = "c0580963-baad-4486-b1aa-036e1740e7b6",
                             Name = "Chicken Tinder User",
                             NormalizedName = "CHICKEN TINDER USER"
                         });
@@ -365,6 +418,10 @@ namespace ChickenTinder.Migrations
 
             modelBuilder.Entity("ChickenTinder.Models.Chicken_Tinder_User", b =>
                 {
+                    b.HasOne("ChickenTinder.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("ChickenTinder.Models.Food_Type", "Food_Type")
                         .WithMany()
                         .HasForeignKey("Food_TypeId");
@@ -378,56 +435,11 @@ namespace ChickenTinder.Migrations
                         .HasForeignKey("RestaurantId");
                 });
 
-            modelBuilder.Entity("ChickenTinder.Models.Group_Chicken_Tinder_User", b =>
-                {
-                    b.HasOne("ChickenTinder.Models.Chicken_Tinder_User", "Chicken_Tinder_User")
-                        .WithMany("Group_Chicken_Tinder_Users")
-                        .HasForeignKey("Chicken_Tinder_UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ChickenTinder.Models.Group", "Group")
-                        .WithMany("Group_Chicken_Tinder_Users")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ChickenTinder.Models.Group_Restaurant", b =>
-                {
-                    b.HasOne("ChickenTinder.Models.Group", "Group")
-                        .WithMany("Group_Restaurants")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ChickenTinder.Models.Restaurant", "Restaurant")
-                        .WithMany("Group_Restaurants")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ChickenTinder.Models.Restaurant", b =>
                 {
-                    b.HasOne("ChickenTinder.Models.Food_Type", "Food_Type")
+                    b.HasOne("ChickenTinder.Models.Location", "Location")
                         .WithMany()
-                        .HasForeignKey("Food_TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ChickenTinder.Models.Restaurant_Chicken_Tinder_User", b =>
-                {
-                    b.HasOne("ChickenTinder.Models.Chicken_Tinder_User", "Chicken_Tinder_User")
-                        .WithMany("Restaurant_Chicken_Tinder_Users")
-                        .HasForeignKey("Chicken_Tinder_UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ChickenTinder.Models.Restaurant", "Restaurant")
-                        .WithMany("Restaurant_Chicken_Tinder_Users")
-                        .HasForeignKey("RestaurantId")
+                        .HasForeignKey("LocationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

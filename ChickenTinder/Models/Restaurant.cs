@@ -41,7 +41,5 @@ namespace ChickenTinder.Models
         [JsonProperty("currency")]
 
         public string Currency { get; set; }
-        public ICollection<Group_Restaurant> Group_Restaurants { get; set; }
-        public ICollection<Restaurant_Chicken_Tinder_User> Restaurant_Chicken_Tinder_Users { get; set; }
     }
 }

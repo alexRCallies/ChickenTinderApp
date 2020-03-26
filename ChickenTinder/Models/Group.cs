@@ -10,7 +10,5 @@ namespace ChickenTinder.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Group_Chicken_Tinder_User> Group_Chicken_Tinder_Users { get; set; }
-        public ICollection<Group_Restaurant> Group_Restaurants { get; set; }
     }
 }

@@ -1,29 +1,24 @@
-﻿using ChickenTinder.Models;
+﻿using ChickenTinder.Data;
+using ChickenTinder.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ChickenTinder
 {
-    public static class ZomatoInfo
-
+    public class ZomatoInfo
     {
-
-        const string url = "https://developers.zomato.com/api/v2.1/";
-
-        const string apiKey = "f21a839a0c741e047d2f3ff9f5e9a6b4";
-
-
-
-        public static RestaurantList GetRestaurants()
+        private readonly ApplicationDbContext _context;
+        private readonly ZomatoAPIClient _client;
+        public ZomatoInfo(ApplicationDbContext context, ZomatoAPIClient client)
         {
-            string urlParameters = $"search?entity_id=59&entity_type=city&apikey=f21a839a0c741e047d2f3ff9f5e9a6b4";
-
-            var response = APICall.RunAsync<RestaurantList>(url, urlParameters).GetAwaiter().GetResult();
-
-            return response;
+            client = _client;
+            context = _context;
         }
-
+        
     }
 }

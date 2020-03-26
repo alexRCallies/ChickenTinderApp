@@ -26,35 +26,12 @@ namespace ChickenTinder.Data
                 }
             );
             builder.Entity<Group_Chicken_Tinder_User>()
-                .HasKey(gc => new { gc.Chicken_Tinder_UserId, gc.GroupId });
-            builder.Entity<Group_Chicken_Tinder_User>()
-                .HasOne(gc => gc.Group)
-                .WithMany(g => g.Group_Chicken_Tinder_Users)
-                .HasForeignKey(gc => gc.GroupId);
-            builder.Entity<Group_Chicken_Tinder_User>()
-                .HasOne(gc => gc.Chicken_Tinder_User)
-                .WithMany(c => c.Group_Chicken_Tinder_Users)
-                .HasForeignKey(gc => gc.Chicken_Tinder_UserId);
-            builder.Entity<Restaurant_Chicken_Tinder_User>()
-                .HasKey(rc => new { rc.RestaurantId, rc.Chicken_Tinder_UserId });
-            builder.Entity<Restaurant_Chicken_Tinder_User>()
-                .HasOne(rc => rc.Restaurant)
-                .WithMany(r => r.Restaurant_Chicken_Tinder_Users)
-                .HasForeignKey(rc => rc.RestaurantId);
-            builder.Entity<Restaurant_Chicken_Tinder_User>()
-                .HasOne(rc => rc.Chicken_Tinder_User)
-                .WithMany(c => c.Restaurant_Chicken_Tinder_Users)
-                .HasForeignKey(rc => rc.Chicken_Tinder_UserId);
+                .HasKey(c => new { c.Chicken_Tinder_UserId, c.GroupId });
             builder.Entity<Group_Restaurant>()
-                .HasKey(gr => new { gr.GroupId, gr.RestaurantId });
-            builder.Entity<Group_Restaurant>()
-                .HasOne(gr => gr.Group)
-                .WithMany(g => g.Group_Restaurants)
-                .HasForeignKey(gr => gr.GroupId);
-            builder.Entity<Group_Restaurant>()
-                .HasOne(gr => gr.Restaurant)
-                .WithMany(r => r.Group_Restaurants)
-                .HasForeignKey(gr => gr.RestaurantId);
+                .HasKey(c => new { c.GroupId, c.RestaurantId });
+            builder.Entity<Restaurant_Chicken_Tinder_User>()
+                .HasKey(c => new { c.RestaurantId, c.Chicken_Tinder_UserId });
+
         }
         public DbSet<Chicken_Tinder_User> Chicken_Tinder_Users { get; set; }
         public DbSet<Food_Type> Food_Types { get; set; }

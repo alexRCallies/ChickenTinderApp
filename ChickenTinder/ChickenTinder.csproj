@@ -5,11 +5,6 @@
     <UserSecretsId>aspnet-ChickenTinder-B49B5DDE-3621-4E72-8C27-C94477A7A153</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Migrations\20200325141659_Init.cs" />
-    <Compile Remove="Migrations\20200325141659_Init.Designer.cs" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Google.Apis" Version="1.44.1" />

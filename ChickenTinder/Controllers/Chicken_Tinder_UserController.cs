@@ -15,10 +15,11 @@ namespace ChickenTinder.Controllers
     public class Chicken_Tinder_UserController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public Chicken_Tinder_UserController(ApplicationDbContext context)
+        private readonly ZomatoAPIClient _client;
+        public Chicken_Tinder_UserController(ApplicationDbContext context, ZomatoAPIClient client)
         {
             _context = context;
+            _client = client;
         }
 
         // GET: Chicken_Tinder_User
@@ -68,11 +69,19 @@ namespace ChickenTinder.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 chicken_Tinder_User.IdentityUserId = userId;
                 _context.Add(chicken_Tinder_User);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (_context.Restaurants.ToList().Count < 1)
+                {
+                    return RedirectToAction(nameof(AddRestaurantToDatabase));
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             ViewData["Food_TypeId"] = new SelectList(_context.Food_Types, "Id", "Id", chicken_Tinder_User.Food_TypeId);
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", chicken_Tinder_User.IdentityUserId);
@@ -182,6 +191,21 @@ namespace ChickenTinder.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _context.Chicken_Tinder_Users.Where(x => x.IdentityUserId == userId).FirstOrDefault();
             return View(user);
+        }
+        public async Task<IActionResult> AddRestaurantToDatabase()
+        {
+            List<Restaurant> restaurantsAPI = new List<Restaurant>();
+            using (var response = await _client.Client.GetAsync("https://developers.zomato.com/api/v2.1/search?entity_id=1267&entity_type=city&apikey=f21a839a0c741e047d2f3ff9f5e9a6b4"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                restaurantsAPI = JsonConvert.DeserializeObject<List<Restaurant>>(apiResponse);
+            }
+            foreach (Restaurant restaurant in restaurantsAPI)
+            {
+                _context.Restaurants.Add(restaurant);
+                _context.SaveChanges();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

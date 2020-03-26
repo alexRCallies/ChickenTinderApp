@@ -12,6 +12,7 @@ using ChickenTinder.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ChickenTinder.Models;
 
 namespace ChickenTinder
 {
@@ -42,7 +43,6 @@ namespace ChickenTinder
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
             });
         }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -73,5 +73,6 @@ namespace ChickenTinder
                 endpoints.MapRazorPages();
             });
         }
+        
     }
 }
