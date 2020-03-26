@@ -36,6 +36,11 @@ namespace ChickenTinder
                 .AddDefaultTokenProviders();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddHttpClient<ZomatoAPIClient>(c =>
+            {
+                c.BaseAddress = new Uri("https://developers.zomato.com/api/v2.1/search?entity_id=1267&entity_type=city&apikey=f21a839a0c741e047d2f3ff9f5e9a6b4");
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

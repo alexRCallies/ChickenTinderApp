@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ChickenTinder.Data;
 using ChickenTinder.Models;
 using System.Security.Claims;
+using Newtonsoft.Json;
 
 namespace ChickenTinder.Controllers
 {
@@ -182,6 +183,5 @@ namespace ChickenTinder.Controllers
             var user = _context.Chicken_Tinder_Users.Where(x => x.IdentityUserId == userId).FirstOrDefault();
             return View(user);
         }
-
     }
 }

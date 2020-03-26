@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChickenTinder.Models
 {
-    public class Restaurant
+    public class Restaurantasas
     {
         public int Id { get; set; }
         public string Name { get; set; }
