@@ -60,5 +60,6 @@ namespace ChickenTinder.Data
         public DbSet<Food_Type> Food_Types { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }
