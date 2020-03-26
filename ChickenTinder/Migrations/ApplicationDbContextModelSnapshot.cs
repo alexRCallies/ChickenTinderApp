@@ -131,6 +131,12 @@ namespace ChickenTinder.Migrations
                     b.Property<int>("Food_TypeId")
                         .HasColumnType("int");
 
+                    b.Property<float>("Latitude")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Longitude")
+                        .HasColumnType("real");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -185,8 +191,8 @@ namespace ChickenTinder.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "51aafa11-6fb6-47ed-a5a4-4d35ca9bc95b",
-                            ConcurrencyStamp = "541a0b76-596f-4d94-867c-d070a8c79d90",
+                            Id = "20f2eb51-580f-44c2-a788-f398dcecba06",
+                            ConcurrencyStamp = "fbe650ce-be99-419c-a323-59749cd77b16",
                             Name = "Chicken Tinder User",
                             NormalizedName = "CHICKEN TINDER USER"
                         });

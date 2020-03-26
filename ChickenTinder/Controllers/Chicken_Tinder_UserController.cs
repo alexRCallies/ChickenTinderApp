@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ChickenTinder.Data;
 using ChickenTinder.Models;
+using System.Security.Claims;
 
 namespace ChickenTinder.Controllers
 {
@@ -20,10 +21,11 @@ namespace ChickenTinder.Controllers
         }
 
         // GET: Chicken_Tinder_User
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.Chicken_Tinder_Users.Include(c => c.Food_Type).Include(c => c.IdentityUser).Include(c => c.Restaurant);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = _context.Chicken_Tinder_Users.Where(x => x.IdentityUserId == userId).FirstOrDefault();
+            return View(user);
         }
 
         // GET: Chicken_Tinder_User/Details/5
@@ -61,10 +63,12 @@ namespace ChickenTinder.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,PhoneNumber,Address,IdentityUserId,RestaurantId,Food_TypeId")] Chicken_Tinder_User chicken_Tinder_User)
+        public async Task<IActionResult> Create(Chicken_Tinder_User chicken_Tinder_User)
         {
             if (ModelState.IsValid)
             {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                chicken_Tinder_User.IdentityUserId = userId;
                 _context.Add(chicken_Tinder_User);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -168,5 +172,16 @@ namespace ChickenTinder.Controllers
         {
             return _context.Chicken_Tinder_Users.Any(e => e.Id == id);
         }
+        public IActionResult CreateGroup()
+        {
+            return RedirectToAction("Create", "Group");
+        }
+        public IActionResult FindAPlaceToEat()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = _context.Chicken_Tinder_Users.Where(x => x.IdentityUserId == userId).FirstOrDefault();
+            return View(user);
+        }
+
     }
 }

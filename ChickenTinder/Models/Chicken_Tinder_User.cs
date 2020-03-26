@@ -10,7 +10,6 @@ namespace ChickenTinder.Models
 {
     public class Chicken_Tinder_User
     {
-        [Key]
         public int Id { get; set; }
         public int FirstName { get; set; }
         public int LastName { get; set; }
