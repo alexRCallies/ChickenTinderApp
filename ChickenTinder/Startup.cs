@@ -14,6 +14,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ChickenTinder.Models;
 
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+
 namespace ChickenTinder
 {
     public class Startup

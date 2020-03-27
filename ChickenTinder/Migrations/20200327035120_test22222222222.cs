@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ChickenTinder.Migrations
 {
-    public partial class SimpleProblems : Migration
+    public partial class test22222222222 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -254,7 +254,7 @@ namespace ChickenTinder.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    LocationID = table.Column<int>(nullable: false),
+                    LocationID = table.Column<int>(nullable: true),
                     Cuisines = table.Column<string>(nullable: true),
                     AverageCostForTwo = table.Column<int>(nullable: false),
                     Currency = table.Column<string>(nullable: true)
@@ -267,7 +267,7 @@ namespace ChickenTinder.Migrations
                         column: x => x.LocationID,
                         principalTable: "Locations",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -316,7 +316,7 @@ namespace ChickenTinder.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "9b741fca-39c0-4196-b5f4-3bee4e095b4e", "072060e2-b430-475a-ab9f-1191e6127d82", "Chicken Tinder User", "CHICKEN TINDER USER" });
+                values: new object[] { "354ce34a-fefa-4c22-a5c8-6ed7b6a909c7", "9f7aaf65-d2fc-4d7b-806f-2274c392da68", "Chicken Tinder User", "CHICKEN TINDER USER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

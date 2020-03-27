@@ -190,51 +190,55 @@ namespace ChickenTinder.Controllers
         {
             return RedirectToAction("Create", "Group");
         }
-        public IActionResult FindAPlaceToEat()
-        {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _context.Chicken_Tinder_Users.Where(x => x.IdentityUserId == userId).FirstOrDefault();
-            return View(user);
-        }
         public async Task<IActionResult> AddRestaurantToDatabase()
         {
             using (var response = await _client.Client.GetAsync("search?entity_id=1267&entity_type=city&apikey=f21a839a0c741e047d2f3ff9f5e9a6b4"))
             {
-                
                 string jsonString = await response.Content.ReadAsStringAsync();
                 var restaurantList = JsonConvert.DeserializeObject<RestaurantList>(jsonString);
+                CreateLocations(restaurantList);
                 RestaurantLoop(restaurantList);
                 return RedirectToAction("Index");
             }
-            
             return RedirectToAction(nameof(Index));
         }
+        public void CreateLocations(RestaurantList restaurantList)
+        {
+            foreach(RestaurantRecord restaurantRecord in restaurantList.Restaurants)
+            { 
+            Location dbLocation = new Location();
+            dbLocation.City = restaurantRecord.Restaurant.Location.City;
+            dbLocation.Address = restaurantRecord.Restaurant.Location.Address;
+            dbLocation.latitude = restaurantRecord.Restaurant.Location.latitude;
+            dbLocation.longitude = restaurantRecord.Restaurant.Location.longitude;
+            dbLocation.LocalityVerbose = restaurantRecord.Restaurant.Location.LocalityVerbose;
+            _context.Locations.Add(dbLocation);
+            }
+            _context.SaveChanges();
+        }
+
         public void RestaurantLoop(RestaurantList restaurantList)
         {
-            int idCounter = 0;
-            int idCounter1 = 0;
             foreach (RestaurantRecord restaurantRecord in restaurantList.Restaurants)
             {
+                var loc = _context.Locations.Where(l => l.longitude == restaurantRecord.Restaurant.Location.longitude).Where(l => l.latitude == restaurantRecord.Restaurant.Location.latitude).FirstOrDefault();
                 Restaurant dbRestaurant = new Restaurant();
-                Location dbLocation = new Location();
-                dbLocation.ID = idCounter;
-                dbLocation.City = restaurantRecord.Restaurant.Location.City;
-                dbLocation.Address = restaurantRecord.Restaurant.Location.Address;
-                dbLocation.latitude = restaurantRecord.Restaurant.Location.latitude;
-                dbLocation.longitude = restaurantRecord.Restaurant.Location.longitude;
-                dbLocation.LocalityVerbose = restaurantRecord.Restaurant.Location.LocalityVerbose;
-                _context.Locations.Add(dbLocation);
-                dbRestaurant.LocationID = idCounter;
-                dbRestaurant.ID = idCounter1;
+                dbRestaurant.LocationID = loc.ID;
                 dbRestaurant.Currency = restaurantRecord.Restaurant.Cuisines;
                 dbRestaurant.AverageCostForTwo = restaurantRecord.Restaurant.AverageCostForTwo;
                 dbRestaurant.Cuisines = restaurantRecord.Restaurant.Cuisines;
                 dbRestaurant.Name = restaurantRecord.Restaurant.Name;
                 _context.Restaurants.Add(dbRestaurant);
-                idCounter++;
-                idCounter1++;
             }
             _context.SaveChanges();
+        }
+        public IActionResult FindPlaceToEat()
+        {
+            var restaurantsAtRandom = _context.Restaurants.ToList();
+            Random randomRestaurant = new Random();
+            int random = randomRestaurant.Next(1, restaurantsAtRandom.Count + 1);
+            Restaurant restaurantOption = restaurantsAtRandom[random];
+            return View(restaurantOption);
         }
     }
 }

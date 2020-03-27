@@ -13,10 +13,9 @@ namespace ChickenTinder.Models
         [JsonProperty("name")]
         public string Name { get; set; }
         [ForeignKey("Location")]
-        public int LocationID { get; set; }
+        public int? LocationID { get; set; }
         [JsonProperty("location")]
         public Location Location { get; set; }
-
         [JsonProperty("cuisines")]
         public string Cuisines { get; set; }
 

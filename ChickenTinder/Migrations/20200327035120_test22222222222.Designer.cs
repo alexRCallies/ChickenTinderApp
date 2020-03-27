@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChickenTinder.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200327034107_SimpleProblems")]
-    partial class SimpleProblems
+    [Migration("20200327035120_test22222222222")]
+    partial class test22222222222
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -185,7 +185,7 @@ namespace ChickenTinder.Migrations
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LocationID")
+                    b.Property<int?>("LocationID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -240,8 +240,8 @@ namespace ChickenTinder.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9b741fca-39c0-4196-b5f4-3bee4e095b4e",
-                            ConcurrencyStamp = "072060e2-b430-475a-ab9f-1191e6127d82",
+                            Id = "354ce34a-fefa-4c22-a5c8-6ed7b6a909c7",
+                            ConcurrencyStamp = "9f7aaf65-d2fc-4d7b-806f-2274c392da68",
                             Name = "Chicken Tinder User",
                             NormalizedName = "CHICKEN TINDER USER"
                         });
@@ -439,9 +439,7 @@ namespace ChickenTinder.Migrations
                 {
                     b.HasOne("ChickenTinder.Models.Location", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LocationID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
