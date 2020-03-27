@@ -9,6 +9,10 @@ using ChickenTinder.Data;
 using ChickenTinder.Models;
 using System.Security.Claims;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using System.Web.Helpers;
 
 namespace ChickenTinder.Controllers
 {
@@ -194,18 +198,43 @@ namespace ChickenTinder.Controllers
         }
         public async Task<IActionResult> AddRestaurantToDatabase()
         {
-            List<Restaurant> restaurantsAPI = new List<Restaurant>();
-            using (var response = await _client.Client.GetAsync("https://developers.zomato.com/api/v2.1/search?entity_id=1267&entity_type=city&apikey=f21a839a0c741e047d2f3ff9f5e9a6b4"))
+            using (var response = await _client.Client.GetAsync("search?entity_id=1267&entity_type=city&apikey=f21a839a0c741e047d2f3ff9f5e9a6b4"))
             {
-                string apiResponse = await response.Content.ReadAsStringAsync();
-                restaurantsAPI = JsonConvert.DeserializeObject<List<Restaurant>>(apiResponse);
+                
+                string jsonString = await response.Content.ReadAsStringAsync();
+                var restaurantList = JsonConvert.DeserializeObject<RestaurantList>(jsonString);
+                RestaurantLoop(restaurantList);
+                return RedirectToAction("Index");
             }
-            foreach (Restaurant restaurant in restaurantsAPI)
-            {
-                _context.Restaurants.Add(restaurant);
-                _context.SaveChanges();
-            }
+            
             return RedirectToAction(nameof(Index));
+        }
+        public void RestaurantLoop(RestaurantList restaurantList)
+        {
+            int idCounter = 0;
+            int idCounter1 = 0;
+            foreach (RestaurantRecord restaurantRecord in restaurantList.Restaurants)
+            {
+                Restaurant dbRestaurant = new Restaurant();
+                Location dbLocation = new Location();
+                dbLocation.ID = idCounter;
+                dbLocation.City = restaurantRecord.Restaurant.Location.City;
+                dbLocation.Address = restaurantRecord.Restaurant.Location.Address;
+                dbLocation.latitude = restaurantRecord.Restaurant.Location.latitude;
+                dbLocation.longitude = restaurantRecord.Restaurant.Location.longitude;
+                dbLocation.LocalityVerbose = restaurantRecord.Restaurant.Location.LocalityVerbose;
+                _context.Locations.Add(dbLocation);
+                dbRestaurant.LocationID = idCounter;
+                dbRestaurant.ID = idCounter1;
+                dbRestaurant.Currency = restaurantRecord.Restaurant.Cuisines;
+                dbRestaurant.AverageCostForTwo = restaurantRecord.Restaurant.AverageCostForTwo;
+                dbRestaurant.Cuisines = restaurantRecord.Restaurant.Cuisines;
+                dbRestaurant.Name = restaurantRecord.Restaurant.Name;
+                _context.Restaurants.Add(dbRestaurant);
+                idCounter++;
+                idCounter1++;
+            }
+            _context.SaveChanges();
         }
     }
 }

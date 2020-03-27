@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ChickenTinder.Migrations
 {
-    public partial class Init : Migration
+    public partial class SimpleProblems : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -113,7 +113,7 @@ namespace ChickenTinder.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Location",
+                name: "Locations",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
@@ -126,7 +126,7 @@ namespace ChickenTinder.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Location", x => x.ID);
+                    table.PrimaryKey("PK_Locations", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -263,9 +263,9 @@ namespace ChickenTinder.Migrations
                 {
                     table.PrimaryKey("PK_Restaurants", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Restaurants_Location_LocationID",
+                        name: "FK_Restaurants_Locations_LocationID",
                         column: x => x.LocationID,
-                        principalTable: "Location",
+                        principalTable: "Locations",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -316,7 +316,7 @@ namespace ChickenTinder.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "05dc5232-7a25-41b1-a161-ab49752b9f18", "c0580963-baad-4486-b1aa-036e1740e7b6", "Chicken Tinder User", "CHICKEN TINDER USER" });
+                values: new object[] { "9b741fca-39c0-4196-b5f4-3bee4e095b4e", "072060e2-b430-475a-ab9f-1191e6127d82", "Chicken Tinder User", "CHICKEN TINDER USER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -431,7 +431,7 @@ namespace ChickenTinder.Migrations
                 name: "Restaurants");
 
             migrationBuilder.DropTable(
-                name: "Location");
+                name: "Locations");
         }
     }
 }

@@ -196,8 +196,14 @@ E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcor
 E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcoreapp3.1\Google.Apis.Core.dll
 E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\obj\Debug\netcoreapp3.1\Razor\Views\Home\About.cshtml.g.cs
 E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\obj\Debug\netcoreapp3.1\Razor\Views\Home\FindRestaurant.cshtml.g.cs
-E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\obj\Debug\netcoreapp3.1\ChickenTinder.MvcApplicationPartsAssemblyInfo.cs
-E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\obj\Debug\netcoreapp3.1\ChickenTinder.MvcApplicationPartsAssemblyInfo.cache
 E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
 E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcoreapp3.1\System.Text.Json.dll
+E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\obj\Debug\netcoreapp3.1\ChickenTinder.MvcApplicationPartsAssemblyInfo.cs
+E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\obj\Debug\netcoreapp3.1\ChickenTinder.MvcApplicationPartsAssemblyInfo.cache
+E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcoreapp3.1\System.Web.Razor.dll
+E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcoreapp3.1\System.Web.Helpers.dll
+E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcoreapp3.1\System.Web.WebPages.Deployment.dll
+E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcoreapp3.1\System.Web.WebPages.Razor.dll
+E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcoreapp3.1\System.Web.WebPages.dll
+E:\Documents\DevCodeCamp\Projects\ChickenTinderss\ChickenTinder\bin\Debug\netcoreapp3.1\Microsoft.Web.Infrastructure.dll

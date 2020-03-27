@@ -12,11 +12,7 @@ namespace ChickenTinder.Models
         [Key]
         public int ID { get; set; }
         [JsonProperty("address")]
-
         public string Address { get; set; }
-
-
-
         [JsonProperty("city")]
 
         public string City { get; set; }

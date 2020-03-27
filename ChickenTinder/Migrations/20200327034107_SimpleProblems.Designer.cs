@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChickenTinder.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200326235643_Init")]
-    partial class Init
+    [Migration("20200327034107_SimpleProblems")]
+    partial class SimpleProblems
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -166,7 +166,7 @@ namespace ChickenTinder.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Location");
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("ChickenTinder.Models.Restaurant", b =>
@@ -240,8 +240,8 @@ namespace ChickenTinder.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "05dc5232-7a25-41b1-a161-ab49752b9f18",
-                            ConcurrencyStamp = "c0580963-baad-4486-b1aa-036e1740e7b6",
+                            Id = "9b741fca-39c0-4196-b5f4-3bee4e095b4e",
+                            ConcurrencyStamp = "072060e2-b430-475a-ab9f-1191e6127d82",
                             Name = "Chicken Tinder User",
                             NormalizedName = "CHICKEN TINDER USER"
                         });

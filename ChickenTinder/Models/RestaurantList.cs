@@ -23,9 +23,5 @@ namespace ChickenTinder.Models
         [JsonProperty("restaurants")]
 
         public RestaurantRecord[] Restaurants { get; set; }
-        public RestaurantList()
-        {
-            List<RestaurantList> restaurants = new List<RestaurantList>();
-        }
     }
 }

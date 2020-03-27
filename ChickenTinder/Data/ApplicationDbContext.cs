@@ -31,12 +31,12 @@ namespace ChickenTinder.Data
                 .HasKey(c => new { c.GroupId, c.RestaurantId });
             builder.Entity<Restaurant_Chicken_Tinder_User>()
                 .HasKey(c => new { c.RestaurantId, c.Chicken_Tinder_UserId });
-
         }
         public DbSet<Chicken_Tinder_User> Chicken_Tinder_Users { get; set; }
         public DbSet<Food_Type> Food_Types { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Location> Locations { get; set; }
     }
 }
